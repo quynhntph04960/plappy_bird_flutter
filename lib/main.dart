@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 
@@ -45,6 +46,14 @@ class _HomePageState extends State<HomePage> {
   double sumWidthTwo = 2;
   double sumWidthThree = 3;
 
+  double heightOneTop = 0;
+  double heightTwoTop = 0;
+  double heightThreeTop = 0;
+
+  double heightOneDown = 0;
+  double heightTwoDown = 0;
+  double heightThreeDown = 0;
+
   int count = 0;
 
   bool isCheckOne = true;
@@ -59,28 +68,44 @@ class _HomePageState extends State<HomePage> {
 
   start() {
     isStart = true;
-    Timer.periodic(const Duration(milliseconds: 20), (timer) {
+    Timer.periodic(const Duration(milliseconds: 30), (timer) {
       time += 0.05;
       height = -4.9 * time * time + 2.8 * time;
       birdY = birdInitial - height;
       barriersOne -= 0.02;
       barriersTwo -= 0.02;
       barriersThree -= 0.02;
+      if (birdY > 1) {
+        // timer.cancel();
+        birdY = 1;
+        isStart = false;
+      }
+      if (birdY < -1) {
+        birdY = -1;
+      }
 
       if (isCheckOne && barriersOne < 0) {
         count++;
+        heightThreeTop = Random().nextDouble() * max(0, 200);
+        heightThreeDown = Random().nextDouble() * max(0, 200);
+
         isCheckOne = false;
         isCheckTwo = true;
       }
 
       if (isCheckTwo && barriersTwo < 0) {
         count++;
+        heightOneTop = Random().nextDouble() * max(0, 200);
+        heightOneDown = Random().nextDouble() * max(0, 200);
+
         isCheckTwo = false;
         isCheckThree = true;
       }
 
       if (isCheckThree && barriersThree < 0) {
         count++;
+        heightTwoTop = Random().nextDouble() * max(0, 200);
+        heightTwoDown = Random().nextDouble() * max(0, 200);
         isCheckOne = true;
         isCheckThree = false;
       }
@@ -93,12 +118,6 @@ class _HomePageState extends State<HomePage> {
       }
       if (barriersThree < -1.4 && barriersTwo < 1) {
         barriersThree = barriersTwo + 1;
-      }
-
-      if (birdY > 1) {
-        // timer.cancel();
-        birdY = 1;
-        isStart = false;
       }
 
       setState(() {});
@@ -133,12 +152,36 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.yellow,
                     ),
                   ),
-                  ItemBird(positionX: barriersOne, positionY: 1, type: 1),
-                  ItemBird(positionX: barriersOne, positionY: -1, type: 1),
-                  ItemBird(positionX: barriersTwo, positionY: 1, type: 2),
-                  ItemBird(positionX: barriersTwo, positionY: -1, type: 2),
-                  ItemBird(positionX: barriersThree, positionY: 1, type: 3),
-                  ItemBird(positionX: barriersThree, positionY: -1, type: 3),
+                  ItemBird(
+                      positionX: barriersOne,
+                      positionY: 1,
+                      type: 1,
+                      height: heightOneDown),
+                  ItemBird(
+                      positionX: barriersOne,
+                      positionY: -1,
+                      type: 1,
+                      height: heightOneTop),
+                  ItemBird(
+                      positionX: barriersTwo,
+                      positionY: 1,
+                      type: 2,
+                      height: heightTwoTop),
+                  ItemBird(
+                      positionX: barriersTwo,
+                      positionY: -1,
+                      type: 2,
+                      height: heightTwoDown),
+                  ItemBird(
+                      positionX: barriersThree,
+                      positionY: 1,
+                      type: 3,
+                      height: heightThreeTop),
+                  ItemBird(
+                      positionX: barriersThree,
+                      positionY: -1,
+                      type: 3,
+                      height: heightThreeDown),
                 ],
               ),
             ),

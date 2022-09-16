@@ -4,11 +4,13 @@ class ItemBird extends StatelessWidget {
   final double positionY;
   final double positionX;
   final int type;
+  final double height;
 
   const ItemBird(
       {Key? key,
       required this.positionY,
       required this.positionX,
+      required this.height,
       required this.type})
       : super(key: key);
 
@@ -20,7 +22,7 @@ class ItemBird extends StatelessWidget {
       child: Container(
           color: Colors.green,
           width: 70,
-          height: 200,
+          height: height,
           alignment: Alignment.center,
           child: Text(
             type.toString(),
